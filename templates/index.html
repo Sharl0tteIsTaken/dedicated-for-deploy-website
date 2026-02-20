@@ -1,0 +1,104 @@
+{% include "header.html" %}
+
+<div">
+  <div class="base-color"></div>
+  <div class="spacer-top"></div>
+  <div class="post-content">
+    {% for project in project_data[::-1]: %}
+      <div class="wrap-block bg-dark">
+        <div class="post row rounded-4 shadow-lg">
+          <div class="col-xxl-6 d-flex flex-column post-block">
+            <div class="d-flex flex-row h1-div-home">
+              <h1 class="display-4 fw-bold lh-1 text-white title" lang="English">{{ project.title }}</h1>
+               <!-- https://stackoverflow.com/questions/7693224/how-do-i-right-align-div-elements -->
+               <div class="flex-wrap div-in-flex-container-right-align">
+                {% if project.is_demo == "true": %}
+                <a class="btn btn-outline-secondary btn-lg" target="_blank" lang="Not-Applicable" title="{{ current.demo_title.get(current.language) }}" href="{{ url_for(project.demo_ep) }}">
+                  <p class="fancy-font-letter font-size-fixed"> 
+                    demo
+                  </p>
+                </a>
+                {% endif %}
+                <a class="btn btn-outline-secondary btn-lg" target="_blank" lang="Not-Applicable" title="{{ current.gh_title.get(current.language) }}" href="{{ project.gh_link }}">
+                  <img src="../static/assets/svg/github.svg" class="svg-whitened" alt="a line draw image of github, represents link to the project on github." height="30">
+                </a>
+               </div>
+            </div>
+            <div class="flex-row fancy-font-number text-end last-edit-date" lang="Not-Applicable">
+              - {{ project.gh_date }}
+            </div>
+            <hr class="title-separator">
+            <div class="flex-grow-1 d-flex flex-column post-text">
+              {% if project.preview_type != 'none': %}
+                <p class="description">
+                  {{ project.description.get(current.language) | safe }}
+                </p>
+              {% endif %}
+              <div class="d-flex mt-auto">
+                <div class="row align-items-end">
+                  {% for desc in project.keywords.get(current.language): %}
+                    <div class="col keyword-block">
+                      <button type="button" class="btn btn-outline-info keyword-text" lang="Traditional-Chinese" disabled>{{ desc }}</button>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% if project.preview_type == 'none': %}
+            <p class="col-xxl-6 description post-only-text">
+              {{ project.description.get(current.language) | safe }}
+            </p>
+          {% else %}
+            <div class="col-xxl-6 result-block">
+              <div class="container no-padding">
+                {% if project.preview_type == "video": %}
+                  <video controls class="d-block w-100">
+                    <!-- https://stackoverflow.com/questions/27752500/how-to-have-an-anim-gif-on-a-link-and-play-it-on-hover-and-reset -->
+                    <source src="{{ project.preview_video }}" type="video/mp4" />
+                  </video>
+                {% elif project.preview_type == 'image': %}
+                  <div id="carouselIndicators" class="carousel slide">
+                    <div class="carousel-indicators">
+                      <!-- if somehow someday there's only one preview-image in a project shown add code here.  -->
+                      <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="0" aria-label="Slide 1" class="active" aria-current="true"></button>
+                      {% for num in image_nums: %}
+                        <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="{{ num + 1 }}" aria-label="Slide {{ num + 2 }}"></button>
+                      {% endfor %}
+                    </div>
+                    <div class="carousel-inner">
+                      {% if first_loc != "": %}
+                        <div class="carousel-item active" data-bs-interval="6000">
+                          <img src="{{ first_loc[project.info_id] }}" class="d-block w-100" alt="a image of preview code.">
+                        </div>
+                        {% for loc in image_locs[project.info_id] %}
+                          <div class="carousel-item" data-bs-interval="6000">
+                            <img src="{{ loc }}" class="d-block w-100" alt="a image of preview code.">
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                    </div>
+                    <button class="carousel-control-prev carousel-btn" type="button" data-bs-target="#carouselIndicators" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next carousel-btn" type="button" data-bs-target="#carouselIndicators" data-bs-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Next</span>
+                    </button>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="spacer-between"></div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="spacer-bottom"></div>
+
+{% include "footer.html" %}

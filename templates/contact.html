@@ -1,0 +1,97 @@
+{% include "header.html" %}
+
+<!-- Page Header-->
+<header
+  class="header-bg"
+  style="background-image: url('../static/assets/img/contact-bg-original.jpg')"
+  >
+  <div class="container header-text-center custom-bg-container"> 
+    <div class="row">
+      <div class="page-heading">
+        {% if msg_sent: %}
+        <h1>Successfully sent your message</h1>
+        {% else: %}
+        <h1 class="contact-h1">{{ static_data.title.get(current.language) }}</h1>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</header>
+<!-- photo credit -->
+<div class="photo-credit" lang="English">
+  Photo by 
+  <a href="https://unsplash.com/@lobostudiohamburg?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">
+    LoboStudio Hamburg
+  </a>
+  on
+  <a href="https://unsplash.com/photos/red-telephone-booth-beside-road-bepwY8khinw?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">
+  Unsplash
+  </a>
+</div>
+
+<!-- Main Content-->
+<main class="mb-4">
+  <div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <p>
+          {{ static_data.description.get(current.language) }}
+        </p>
+        <div class="my-5">
+          <!-- * * * * * * * * * * * * * * *-->
+          <!-- * * Simplified SB Contact Form for the Tutorial* *-->
+          <form
+            id="contactForm"
+            name="sentMessage"
+            action="{{ url_for('contact') }}"
+            method="post"
+          >
+            <div class="form-floating">
+              <input
+                class="form-control"
+                id="name"
+                name="name"
+                type="text"
+                placeholder=""
+                required
+              />
+              <label for="name">{{ static_data.form_name.get(current.language) }}</label>
+            </div>
+            <div class="form-floating">
+              <input
+                class="form-control"
+                id="email"
+                name="email"
+                type="email"
+                placeholder=""
+                required
+              />
+              <label for="email">{{ static_data.form_mail.get(current.language) }}</label>
+            </div>
+            <div class="form-floating">
+              <textarea
+                class="form-control"
+                id="message"
+                name="message"
+                placeholder=""
+                required
+                style="height: 12rem"
+              ></textarea>
+              <label for="message">{{ static_data.form_msg.get(current.language) }}</label>
+            </div>
+            <br />
+            <button
+              class="btn btn-primary text-uppercase"
+              id="submitButton"
+              type="submit"
+            >
+              {{ static_data.form_sent.get(current.language) }}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% include "footer.html" %}
